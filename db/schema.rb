@@ -10,18 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422203325) do
+ActiveRecord::Schema.define(version: 20170427112058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
-    t.text    "username"
-    t.text    "password_digest"
-    t.text    "first_name"
-    t.text    "second_name"
-    t.text    "patronymic"
-    t.boolean "is_teacher"
+    t.text     "username"
+    t.text     "password_digest"
+    t.text     "first_name"
+    t.text     "second_name"
+    t.text     "patronymic"
+    t.boolean  "is_teacher"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
