@@ -23,7 +23,7 @@ module V1
     private
 
     def user_params
-      params.require(:data).permit(:username, :password, :first_name, :last_name, :patronymic)
+      params.require(:user).permit(:username, :password, :first_name, :last_name, :patronymic)
     end
 
     def find_by_id
