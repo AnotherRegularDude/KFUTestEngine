@@ -12,3 +12,7 @@ frontend (just singlepage application)
 3. PostgreSQL as database, **of course**;
 4. ???
 5. **PROFIT**
+
+### Schema structure
+
+![Schema structure picture](https://github.com/VanyaZ158/KFUTestEngine/raw/master/shema.png)

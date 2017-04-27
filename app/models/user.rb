@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   validates :username, presence: true, length: { in: 5..15 }, uniqueness: true
   validates :password, length: { minimum: 5 }
-  validates :first_name, :second_name, :patronymic, presence: true, length: { minimum: 4 }
+  validates :first_name, :last_name, :patronymic, presence: true, length: { minimum: 4 }
 
   after_initialize :set_default_values
 
@@ -12,7 +12,7 @@ class User < ApplicationRecord
   end
 
   def fullname
-    "#{second_name} #{first_name} #{patronymic}"
+    "#{last_name} #{first_name} #{patronymic}"
   end
 
   private
