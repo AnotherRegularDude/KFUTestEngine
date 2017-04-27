@@ -3,8 +3,8 @@ module V1
     before_action :find_by_id, only: [:show]
 
     def index
-      @users = User.all
-      paginate @users
+      @users = User.page params[:page]
+      render 'index'
     end
 
     def show
