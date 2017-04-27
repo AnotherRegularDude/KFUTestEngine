@@ -44,9 +44,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'create new good user' do
     user = build(:user)
-    hashed_user = user.attributes
-    hashed_user.delete('password_digest')
-    hashed_user[:password] = 'test_testing'
+    hashed_user = user.attributes.merge(password: user.password)
     encoded_data = { user: hashed_user }.as_json
     post '/v1/users', params: encoded_data
     data = response_body_to_json[:data]
@@ -66,8 +64,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'create two users with the same usernames' do
     user = create(:user)
-    same_login = user.attributes
-    same_login['username'].upcase!
+    same_login = user.attributes.each { |key, value| { key => value.try(:upcase) } }
     post '/v1/users', params: { user: same_login }.as_json
     data = response_body_to_json[:data]
 
