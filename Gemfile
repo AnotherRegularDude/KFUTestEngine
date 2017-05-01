@@ -21,7 +21,7 @@ gem 'bcrypt', '~> 3.1.7'
 # For JWE auth
 gem 'jwe'
 # For role managing
-gem 'authority'
+gem 'pundit'
 # For pagination
 gem 'kaminari'
 

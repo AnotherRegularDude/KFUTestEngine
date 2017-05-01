@@ -31,4 +31,9 @@
 
 en:
   errors:
-    not_found: "Record, you are searching for, not found"
+    not_found: 'record, you are searching for, not found'
+  activemodel:
+    errors:
+      models:
+        session:
+          bad_credentials: 'bad credentials'
