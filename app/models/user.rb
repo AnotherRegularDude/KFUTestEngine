@@ -15,6 +15,10 @@ class User < ApplicationRecord
     "#{last_name} #{first_name} #{patronymic}"
   end
 
+  def teacher?
+    is_teacher
+  end
+
   private
 
   def set_default_values

@@ -15,13 +15,21 @@ class Session
     errors.empty?
   end
 
+  def user_from_token
+    decrypted_payload = JWEPayload.new(JSON.parse(JWE.decrypt(token, rsa_key)))
+    User.find_by(id: decrypted_payload.user_id)
+  end
+
   private
 
+  class JWEPayload
+    include ActiveModel::Model
+
+    attr_accessor :user_id
+  end
+
   def generate_token
-    payload = {
-      user_id: @user.id,
-      created_time: Time.current
-    }.to_json
+    payload = JWEPayload.new(user_id: @user.id).to_json
 
     @token = JWE.encrypt(payload, rsa_key)
   end

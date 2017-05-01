@@ -32,6 +32,8 @@
 en:
   errors:
     not_found: 'record, you are searching for, not found'
+    not_authorized: "you can't perform this action"
+    login_required: 'you need to log in'
   activemodel:
     errors:
       models:
