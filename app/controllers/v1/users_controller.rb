@@ -1,6 +1,6 @@
 module V1
   class UsersController < ApplicationController
-    before_action :find_by_id, only: %i[show destroy]
+    before_action :find_by_id, except: %i[index create]
 
     def index
       @users = User.page params[:page]
@@ -15,6 +15,16 @@ module V1
       @user = User.new(user_params)
       if @user.save
         render 'create'
+      else
+        render 'create', status: :bad_request
+      end
+    end
+
+    def update
+      authorize @user
+
+      if @user.update(permitted_attributes(@user))
+        render 'create', status: :accepted
       else
         render 'create', status: :bad_request
       end
