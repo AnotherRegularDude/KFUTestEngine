@@ -40,4 +40,5 @@ en:
           bad_credentials: 'bad credentials'
   pundit:
     authorize?: "you can't perform this action"
+    update?: 'can edit self account or must be teacher'
     destroy?: 'only teachers can delete accounts'

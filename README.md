@@ -7,7 +7,7 @@ frontend (just singlepage application)
 
 ### Backend
 
-1. Rails 5.0 will be used;
+1. Rails 5.1 will be used;
 2. JSON API designed to comply with [this](http://jsonapi.org/) specification;
 3. PostgreSQL as database, **of course**;
 4. ???
