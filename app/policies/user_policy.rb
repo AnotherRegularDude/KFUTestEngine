@@ -1,5 +1,5 @@
 class UserPolicy < ApplicationPolicy
   def destroy?
-    @user.teacher?
+    user.teacher?
   end
 end

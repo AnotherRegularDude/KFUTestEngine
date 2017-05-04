@@ -22,6 +22,8 @@ module V1
 
     def destroy
       authorize @user
+
+      render 'destroy'
     end
 
     private

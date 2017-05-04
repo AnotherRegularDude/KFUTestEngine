@@ -31,11 +31,13 @@
 
 en:
   errors:
-    not_found: 'record, you are searching for, not found'
-    not_authorized: "you can't perform this action"
-    login_required: 'you need to log in'
+    login_required: "you need to set correct 'Authorization' header"
+    record_not_found: 'record, you are searching for, not found'
   activemodel:
     errors:
       models:
         session:
           bad_credentials: 'bad credentials'
+  pundit:
+    authorize?: "you can't perform this action"
+    destroy?: 'only teachers can delete accounts'
