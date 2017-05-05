@@ -107,7 +107,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     data = response_body_to_json[:data]
 
     assert_nil data[:user]
-    assert_equal I18n.t('pundit.authorize?'), data[:error]
+    assert_equal I18n.t('errors.login_required'), data[:error]
   end
 
   test 'update information about students via self acc' do

@@ -18,6 +18,8 @@ class Session
   def user_from_token
     decrypted_payload = JWEPayload.new(JSON.parse(JWE.decrypt(token, rsa_key)))
     User.find_by(id: decrypted_payload.user_id)
+  rescue JWE::DecodeError
+    nil
   end
 
   private
@@ -30,7 +32,6 @@ class Session
 
   def generate_token
     payload = JWEPayload.new(user_id: @user.id).to_json
-
     @token = JWE.encrypt(payload, rsa_key)
   end
 

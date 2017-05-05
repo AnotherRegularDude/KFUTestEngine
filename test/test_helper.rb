@@ -4,7 +4,7 @@ require 'rails/test_help'
 require 'minitest/reporters'
 require 'parallel_tests/test/runtime_logger' if ENV['RECORD_RUNTIME']
 
-Minitest::Reporters.use!
+Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods

@@ -2,8 +2,6 @@ class ApplicationPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
-    raise Pundit::NotAuthorizedError, query: 'authorize?' if user.blank?
-
     @user = user
     @record = record
   end

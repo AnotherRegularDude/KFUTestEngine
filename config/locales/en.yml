@@ -31,7 +31,7 @@
 
 en:
   errors:
-    login_required: "you need to set correct 'Authorization' header"
+    login_required: "you need to login correctly"
     record_not_found: 'record, you are searching for, not found'
   activemodel:
     errors:
@@ -39,7 +39,6 @@ en:
         session:
           bad_credentials: 'bad credentials'
   pundit:
-    authorize?: "you can't perform this action"
     create?: 'not permitted for record creation'
     update?: 'can edit self account or must be teacher'
     destroy?: 'only teachers can delete accounts'

@@ -1,5 +1,12 @@
 module V1
   class TopicsController < ApplicationController
+    before_action :check_authorized, only: %i[create]
+
+    def index
+      @topics = Topic.page params[:page]
+      render 'index'
+    end
+
     def create
       authorize Topic
 

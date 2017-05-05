@@ -1,13 +1,14 @@
 class ApplicationController < ActionController::API
   include Pundit
 
-  rescue_from JWE::DecodeError, with: :bad_token_handler
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_handler
   rescue_from Pundit::NotAuthorizedError, with: :permissions_handler
 
   protected
 
-  def bad_token_handler
+  def check_authorized
+    return if current_user.present?
+
     @message_path = 'errors.login_required'
     render 'v1/service_errors/basic_error', status: :unauthorized
   end
