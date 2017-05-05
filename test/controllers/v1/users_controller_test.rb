@@ -73,8 +73,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'delete student account with teacher account' do
     student = create(:user)
-    teacher = create(:user, :teacher)
-    delete v1_user_url(student), headers: auth_headers_for(teacher)
+    delete v1_user_url(student), headers: full_auth_helper.headers
     data = response_body_to_json[:data]
 
     assert_not_nil data[:user]
@@ -84,8 +83,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'delete student account with not permitted acc' do
     student = create(:user)
-    deleter = create(:user)
-    delete v1_user_url(student), headers: auth_headers_for(deleter)
+    delete v1_user_url(student), headers: full_auth_helper(factory_params: []).headers
     data = response_body_to_json[:data]
 
     assert_nil data[:user]
@@ -103,7 +101,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'delete user with auth token, wich have bad user id' do
     student = create(:user)
-    delete v1_user_url(student), headers: { 'Authorization': token_with_bad_id }
+    auth_holder = full_auth_helper
+    auth_holder.user.destroy
+    delete v1_user_url(student), headers: auth_holder.headers
     data = response_body_to_json[:data]
 
     assert_nil data[:user]
@@ -113,7 +113,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'update information about students via self acc' do
     student = create(:user)
     encoded_data = { user: { first_name: 'AnotherName' } }.as_json
-    put v1_user_url(student), params: encoded_data, headers: auth_headers_for(student)
+    put v1_user_url(student), params: encoded_data, headers: { 'Authorization': token_for(student) }
     data = response_body_to_json[:data]
 
     refreshed_stud = User.find_by(id: student.id)
@@ -125,9 +125,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "update student acc from another teacher's acc" do
     student = create(:user)
-    teacher = create(:user, :teacher)
     encoded_data = { user: { first_name: 'AnotherName' } }.as_json
-    put v1_user_url(student), params: encoded_data, headers: auth_headers_for(teacher)
+    put v1_user_url(student), params: encoded_data, headers: full_auth_helper.headers
     data = response_body_to_json[:data]
 
     assert_not_nil data[:user]
@@ -138,7 +137,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "can't update username and password fields" do
     student = create(:user)
     encoded_data = { user: { username: 'AnotherUsername', password: 'AnotherPassword' } }.as_json
-    put v1_user_url(student), params: encoded_data, headers: auth_headers_for(student)
+    put v1_user_url(student), params: encoded_data, headers: { 'Authorization': token_for(student) }
     data = response_body_to_json[:data]
 
     refreshed_stud = User.find_by(id: student.id)
@@ -149,23 +148,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'update different student acc via student acc' do
-    student = create(:user)
     edited_stud = create(:user)
     encoded_data = { user: { first_name: 'AnotherName' } }.as_json
-    put v1_user_url(edited_stud), params: encoded_data, headers: auth_headers_for(student)
+    put v1_user_url(edited_stud), params: encoded_data,
+                                  headers: full_auth_helper(factory_params: []).headers
     data = response_body_to_json[:data]
 
     assert_nil data[:user]
     assert_equal I18n.t('pundit.update?'), data[:error]
-  end
-
-  private
-
-  def token_with_bad_id
-    temp_teacher = create(:user, :teacher)
-    token = token_for temp_teacher
-    temp_teacher.destroy
-
-    token
   end
 end

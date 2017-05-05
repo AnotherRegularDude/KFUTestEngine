@@ -13,8 +13,7 @@ class TopicsControllerTest < ActionDispatch::IntegrationTest
 
   test 'index via student' do
     create_list(:topic, 51)
-    student = create(:user)
-    get v1_topics_url, headers: auth_headers_for(student)
+    get v1_topics_url, headers: full_auth_helper(factory_params: []).headers
     data = response_body_to_json
 
     assert_not_empty data[:meta]
@@ -24,8 +23,7 @@ class TopicsControllerTest < ActionDispatch::IntegrationTest
 
   test 'index topics via teacher' do
     create_list(:topic, 51)
-    teacher = create(:user, :teacher)
-    get v1_topics_url, headers: auth_headers_for(teacher)
+    get v1_topics_url, headers: full_auth_helper.headers
     data = response_body_to_json
 
     assert_not_empty data[:meta]
@@ -44,7 +42,7 @@ class TopicsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'teacher try to create not valid topic' do
-    post_with_params(custom_title: '')
+    post_with_params { |topic| topic.title = '' }
     data = response_body_to_json[:data]
 
     assert_not_nil data[:topic]
@@ -67,30 +65,23 @@ class TopicsControllerTest < ActionDispatch::IntegrationTest
 
   private
 
-  def post_with_params(options = {})
-    use_headers = options.fetch(:use_headers, true)
-    factory_params = options.fetch(:factory_params, [:teacher])
-    custom_title = options.fetch(:custom_title, nil)
-    topic, encoded_data = generate_topic_with_data(custom_title)
-    post_with_options(use_headers, factory_params, encoded_data)
+  def post_with_params(use_headers: true, factory_params: [:teacher], &topic_manipulator)
+    topic, encoded_data = generate_topic_with_data(&topic_manipulator)
+    if use_headers
+      post '/v1/topics', params: encoded_data,
+                         headers: full_auth_helper(factory_params: factory_params).headers
+    else
+      post '/v1/topics', params: encoded_data
+    end
 
     topic
   end
 
-  def generate_topic_with_data(custom_title)
+  def generate_topic_with_data
     topic = build(:topic)
-    topic.title = custom_title unless custom_title.nil?
+    yield(topic) if block_given?
     encoded_data = { topic: topic }.as_json
 
     [topic, encoded_data]
-  end
-
-  def post_with_options(use_headers, factory_params, encoded_data)
-    if use_headers
-      auth_user = create(:user, *factory_params)
-      post '/v1/topics', params: encoded_data, headers: auth_headers_for(auth_user)
-    else
-      post '/v1/topics', params: encoded_data
-    end
   end
 end
