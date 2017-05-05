@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     resources :sessions, only: %i[create]
 
     resources :users
+    resources :topics
   end
 end
