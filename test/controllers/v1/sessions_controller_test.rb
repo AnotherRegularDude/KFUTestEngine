@@ -12,7 +12,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     post '/v1/sessions', params: encoded_data
     data = response_body_to_json[:data]
 
-    assert_empty data[:errors]
+    assert_nil data[:errors]
     assert_not_nil data[:session][:token]
   end
 

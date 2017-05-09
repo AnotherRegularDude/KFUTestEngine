@@ -38,7 +38,7 @@ class TopicsControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil data[:topic]
     assert_equal topic.short_description, data[:topic][:short_description]
     assert_equal topic.title.humanize, data[:topic][:title]
-    assert_empty data[:errors]
+    assert_nil data[:errors]
   end
 
   test 'teacher try to create not valid topic' do
@@ -67,7 +67,7 @@ class TopicsControllerTest < ActionDispatch::IntegrationTest
     topic = put_with_params { |item| item.title = 'Unique Changed Topic' }
     data = response_body_to_json[:data]
 
-    assert_empty data[:errors]
+    assert_nil data[:errors]
     assert_not_equal topic.title, data[:topic][:title]
   end
 

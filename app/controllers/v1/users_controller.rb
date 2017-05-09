@@ -1,5 +1,7 @@
 module V1
   class UsersController < ApplicationController
+    wrap_parameters include: %i[username password first_name last_name patronymic]
+
     before_action :check_authorized, only: %i[update destroy]
     before_action :find_by_id, except: %i[index create]
 

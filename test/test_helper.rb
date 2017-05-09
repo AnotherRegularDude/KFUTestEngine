@@ -11,7 +11,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   def response_body_to_json
-    JSON.parse(@response.body, symbolize_names: true)
+    JSON.parse(@response.body).deep_transform_keys(&:underscore).deep_transform_keys(&:to_sym)
   end
 
   def full_auth_helper(factory_params: [:teacher])

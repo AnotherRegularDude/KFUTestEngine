@@ -29,7 +29,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user = create(:user)
     get v1_user_url(user)
     user_remote = response_body_to_json[:data][:user]
-
     assert_equal user.id, user_remote[:id]
     assert_equal user.fullname, user_remote[:fullname]
     assert_equal user.is_teacher, user_remote[:is_teacher]
@@ -49,7 +48,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post '/v1/users', params: encoded_data
     data = response_body_to_json[:data]
 
-    assert_empty data[:errors]
+    assert_nil data[:errors]
     assert_not_empty data[:user]
     assert_equal user.first_name, data[:user][:first_name]
   end
@@ -121,7 +120,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     data = response_body_to_json[:data]
 
     assert_not_nil data[:user]
-    assert_empty data[:errors]
+    assert_nil data[:errors]
     assert_equal 'AnotherName', data[:user][:first_name]
     assert_not_equal student.first_name, User.find_by(id: student.id).first_name
   end
@@ -134,7 +133,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_not_nil data[:user]
     assert_equal 'AnotherName', data[:user][:first_name]
-    assert_empty data[:errors]
+    assert_nil data[:errors]
   end
 
   test "can't update username and password fields" do
@@ -145,7 +144,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     refreshed_stud = User.find_by(id: student.id)
     assert_not_nil data[:user]
-    assert_empty data[:errors]
+    assert_nil data[:errors]
     assert_equal student.username, refreshed_stud.username
     assert_equal student.password_digest, refreshed_stud.password_digest
   end

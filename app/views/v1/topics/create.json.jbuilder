@@ -1,4 +1,4 @@
 json.data do
   json.topic @topic, partial: 'shared/topic', as: :topic
-  json.errors @topic.errors
+  json.errors { json.partial! 'shared/model_errors', errors: @topic.errors }
 end
