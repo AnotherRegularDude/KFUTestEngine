@@ -79,6 +79,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil data[:user]
     assert_equal student.id, data[:user][:id]
     assert_nil data[:user][:password]
+    assert_nil User.find_by(id: student.id)
   end
 
   test 'delete student account with not permitted acc' do
@@ -88,6 +89,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil data[:user]
     assert_equal I18n.t('pundit.destroy?'), data[:error]
+    assert_not_nil User.find_by(id: student.id)
   end
 
   test 'delete student with bad auth token' do
@@ -97,6 +99,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil data[:user]
     assert_equal I18n.t('errors.login_required'), data[:error]
+    assert_not_nil User.find_by(id: student.id)
   end
 
   test 'delete user with auth token, wich have bad user id' do
@@ -108,6 +111,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil data[:user]
     assert_equal I18n.t('errors.login_required'), data[:error]
+    assert_not_nil User.find_by(id: student.id)
   end
 
   test 'update information about students via self acc' do
@@ -116,11 +120,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     put v1_user_url(student), params: encoded_data, headers: { 'Authorization': token_for(student) }
     data = response_body_to_json[:data]
 
-    refreshed_stud = User.find_by(id: student.id)
     assert_not_nil data[:user]
     assert_empty data[:errors]
     assert_equal 'AnotherName', data[:user][:first_name]
-    assert_not_equal student.first_name, refreshed_stud.first_name
+    assert_not_equal student.first_name, User.find_by(id: student.id).first_name
   end
 
   test "update student acc from another teacher's acc" do
