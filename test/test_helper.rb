@@ -2,9 +2,8 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/reporters'
-require 'parallel_tests/test/runtime_logger' if ENV['RECORD_RUNTIME']
 
-Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
+Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
