@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :topic do
-    title { Faker::Name.unique.title }
+    title { Faker::Lorem.unique.word.truncate(40) }
     short_description { Faker::Lorem.sentences }
     questions_per_test { Faker::Number.between(5, 10) }
   end

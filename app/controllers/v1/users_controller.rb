@@ -34,6 +34,7 @@ module V1
     def destroy
       authorize @user
 
+      @user.destroy!
       render 'destroy'
     end
 

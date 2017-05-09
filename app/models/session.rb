@@ -4,6 +4,13 @@ class Session
   attr_accessor :username, :password
   attr_accessor :token
 
+  def self.user_from_token(token)
+    decrypted_payload = JWEPayload.new(JSON.parse(JWE.decrypt(token, PRELOADED_RSA)))
+    User.find_by(id: decrypted_payload.user_id)
+  rescue JWE::DecodeError
+    nil
+  end
+
   def create_token
     @user = User.find_by(username: username)
     if @user.present? && @user.authenticate(password)
@@ -15,27 +22,10 @@ class Session
     errors.empty?
   end
 
-  def user_from_token
-    decrypted_payload = JWEPayload.new(JSON.parse(JWE.decrypt(token, rsa_key)))
-    User.find_by(id: decrypted_payload.user_id)
-  rescue JWE::DecodeError
-    nil
-  end
-
   private
-
-  class JWEPayload
-    include ActiveModel::Model
-
-    attr_accessor :user_id
-  end
 
   def generate_token
     payload = JWEPayload.new(user_id: @user.id).to_json
-    @token = JWE.encrypt(payload, rsa_key)
-  end
-
-  def rsa_key
-    OpenSSL::PKey::RSA.new File.read RSA_KEY_PATH
+    @token = JWE.encrypt(payload, PRELOADED_RSA)
   end
 end

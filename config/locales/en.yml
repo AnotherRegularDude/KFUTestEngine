@@ -40,5 +40,5 @@ en:
           bad_credentials: 'bad credentials'
   pundit:
     create?: 'not permitted for record creation'
-    update?: 'can edit self account or must be teacher'
-    destroy?: 'only teachers can delete accounts'
+    update?: "not enough permissions to edit the record (and you can edit only your account's information)"
+    destroy?: 'only teachers can delete data'

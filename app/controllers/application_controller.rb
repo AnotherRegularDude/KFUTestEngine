@@ -24,7 +24,6 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    session = Session.new(token: request.headers.fetch('Authorization', ''))
-    session.user_from_token
+    Session.user_from_token request.headers.fetch('Authorization', '')
   end
 end

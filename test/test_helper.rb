@@ -11,28 +11,17 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  class AuthDataHolder
-    attr_accessor :user, :token, :headers
-
-    class << self
-      def create
-        yield new
-      end
-    end
-  end
-
   def response_body_to_json
     JSON.parse(@response.body, symbolize_names: true)
   end
 
   def full_auth_helper(factory_params: [:teacher])
-    AuthDataHolder.create do |auth_holder|
-      auth_holder.user = create(:user, *factory_params)
-      auth_holder.token = token_for auth_holder.user
-      auth_holder.headers = auth_headers_for auth_holder.token
+    auth = OpenStruct.new
+    auth.user = create(:user, *factory_params)
+    auth.token = token_for auth.user
+    auth.headers = auth_headers_for auth.token
 
-      auth_holder
-    end
+    auth
   end
 
   private
