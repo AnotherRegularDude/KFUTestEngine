@@ -1,6 +1,24 @@
 require 'test_helper'
 
 class MaterialsControllerTest < ActionDispatch::IntegrationTest
+  test 'index materials without teacher' do
+    create(:topic_with_materials, materials_count: 51)
+
+    get v1_materials_url
+    data = response_body_to_json
+
+    assert_equal 25, data[:data][:materials].count
+    assert_not_nil data[:meta][:next_page]
+  end
+
+  test 'index with big page' do
+    get v1_materials_url, params: { page: 5 }
+    data = response_body_to_json
+
+    assert_empty data[:data][:materials]
+    assert_empty data[:meta]
+  end
+
   test 'teacher create work material for topic' do
     topic = post_with_params
     material = topic.materials.first
