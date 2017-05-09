@@ -1,6 +1,8 @@
 class Topic < ApplicationRecord
   MIN_NUMBER_OF_QUESTIONS = 2
 
+  has_many :materials, dependent: :destroy
+
   validates :title, presence: true, length: { maximum: 40 }, uniqueness: true
   validates :short_description, length: { maximum: 255 }
   validates :questions_per_test, numericality: {

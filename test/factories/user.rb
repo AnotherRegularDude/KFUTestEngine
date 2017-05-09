@@ -9,5 +9,9 @@ FactoryGirl.define do
     trait :teacher do
       is_teacher true
     end
+
+    trait :student do
+      is_teacher false
+    end
   end
 end

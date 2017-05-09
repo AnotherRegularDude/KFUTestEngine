@@ -36,7 +36,7 @@ module V1
     def destroy
       authorize @topic
 
-      @topic.destroy!
+      @topic.destroy
       render 'destroy'
     end
 

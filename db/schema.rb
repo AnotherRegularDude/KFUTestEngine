@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505012516) do
+ActiveRecord::Schema.define(version: 20170509115650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "materials", force: :cascade do |t|
+    t.text "short_description"
+    t.text "text_in_markdown"
+    t.bigint "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_materials_on_topic_id"
+  end
 
   create_table "topics", force: :cascade do |t|
     t.text "title"

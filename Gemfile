@@ -26,6 +26,8 @@ gem 'pundit'
 # For pagination
 gem 'kaminari'
 
+# For markdown parsing
+gem 'redcarpet'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

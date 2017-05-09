@@ -131,6 +131,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
+    redcarpet (3.4.0)
     ruby-progressbar (1.8.1)
     spring (2.0.1)
       activesupport (>= 4.2)
@@ -172,6 +173,7 @@ DEPENDENCIES
   pundit
   rack-cors
   rails (~> 5.1)
+  redcarpet
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

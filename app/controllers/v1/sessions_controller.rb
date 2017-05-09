@@ -1,5 +1,7 @@
 module V1
   class SessionsController < ApplicationController
+    wrap_parameters User, include: %i[username password]
+
     def create
       @session = Session.new(session_params)
 
