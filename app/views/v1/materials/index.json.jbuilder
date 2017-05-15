@@ -4,5 +4,5 @@ json.meta do
 end
 json.data do
   json.topic @topic, partial: 'shared/topic', as: :topic if @topic.present?
-  json.materials @materials, partial: 'shared/material', as: :material
+  json.materials @materials, partial: 'shared/material', as: :material, locals: { full_show: false }
 end

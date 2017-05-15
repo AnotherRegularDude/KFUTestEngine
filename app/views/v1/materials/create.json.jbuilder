@@ -1,5 +1,5 @@
 json.data do
-  json.material @material, partial: 'shared/material', as: :material
+  json.material { json.partial! 'shared/material', material: @material, full_show: true }
   json.errors { json.partial! 'shared/model_errors', errors: @material.errors }
 end
 json.include do
