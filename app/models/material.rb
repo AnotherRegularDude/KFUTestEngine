@@ -1,5 +1,6 @@
 class Material < ApplicationRecord
   include MarkdownConvertible
+  include ActionView::Helpers::SanitizeHelper
 
   belongs_to :topic
 
@@ -13,6 +14,7 @@ class Material < ApplicationRecord
   private
 
   def format_short_description
-    @short_description ||= text_in_markdown.humanize.truncate_words(255)
+    self.short_description ||= strip_tags(processed_html).truncate(255)
+    self.short_description = short_description.humanize
   end
 end

@@ -27,6 +27,7 @@ class MaterialsControllerTest < ActionDispatch::IntegrationTest
     data = response_body_to_json
 
     assert_equal topic.materials.count, data[:data][:materials].count
+    assert_equal topic.id, data[:data][:topic][:id]
     assert_empty data[:meta]
   end
 
