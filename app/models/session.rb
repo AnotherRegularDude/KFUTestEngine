@@ -2,7 +2,7 @@ class Session
   include ActiveModel::Model
 
   attr_accessor :username, :password
-  attr_accessor :token
+  attr_reader :token, :user
 
   def self.user_from_token(token)
     decrypted_payload = JWEPayload.new(JSON.parse(JWE.decrypt(token, PRELOADED_RSA)))
@@ -13,7 +13,7 @@ class Session
 
   def create_token
     @user = User.find_by(username: username)
-    if @user.present? && @user.authenticate(password)
+    if @user&.authenticate(password)
       generate_token
     else
       errors.add :username, :bad_credentials

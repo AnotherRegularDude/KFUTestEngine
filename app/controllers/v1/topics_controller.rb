@@ -4,7 +4,7 @@ module V1
     before_action :find_by_id, except: %i[index create]
 
     def index
-      @topics = Topic.page params[:page]
+      @topics = Topic.order(:id).page params[:page]
       render 'index'
     end
 

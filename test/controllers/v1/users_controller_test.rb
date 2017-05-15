@@ -29,6 +29,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user = create(:user)
     get v1_user_url(user)
     user_remote = response_body_to_json[:data][:user]
+
     assert_equal user.id, user_remote[:id]
     assert_equal user.fullname, user_remote[:fullname]
     assert_equal user.is_teacher, user_remote[:is_teacher]

@@ -6,7 +6,7 @@ module V1
     before_action :find_by_id, except: %i[index create]
 
     def index
-      @users = User.page params[:page]
+      @users = User.order(:id).page params[:page]
       render 'index'
     end
 

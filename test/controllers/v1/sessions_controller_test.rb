@@ -14,6 +14,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil data[:errors]
     assert_not_nil data[:session][:token]
+    assert_equal user.id, data[:user][:id]
   end
 
   test 'login with bad credentials' do
@@ -29,5 +30,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_not_nil data[:errors]
     assert_nil data[:session][:token]
+    assert_empty data[:user]
   end
 end

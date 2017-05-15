@@ -19,6 +19,26 @@ class MaterialsControllerTest < ActionDispatch::IntegrationTest
     assert_empty data[:meta]
   end
 
+  test 'index on topic' do
+    create(:topic_with_materials, materials_count: 40)
+    topic = create(:topic_with_materials, materials_count: 14)
+
+    get v1_topic_materials_url(topic)
+    data = response_body_to_json
+
+    assert_equal topic.materials.count, data[:data][:materials].count
+    assert_empty data[:meta]
+  end
+
+  test 'index on unexisted topic' do
+    topic = build(:topic)
+
+    get "/v1/topics/#{topic.id}/materials"
+    data = response_body_to_json[:data]
+
+    assert_equal I18n.t('errors.record_not_found'), data[:error]
+  end
+
   test 'teacher create work material for topic' do
     topic = post_with_params
     material = topic.materials.first
@@ -47,7 +67,7 @@ class MaterialsControllerTest < ActionDispatch::IntegrationTest
 
   test 'create not valid vmaterial for topic' do
     topic = post_with_params { |*args| args[1].text_in_markdown = '' }
-   data = response_body_to_json
+    data = response_body_to_json
 
     assert_empty topic.materials
     assert_not_nil data[:data][:material]

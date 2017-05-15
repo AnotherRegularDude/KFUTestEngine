@@ -1,1 +1,1 @@
-json.extract! session, :username, :password, :token
+json.extract! session, :token
